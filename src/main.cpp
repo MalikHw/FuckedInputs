@@ -77,7 +77,7 @@ $on_game(Loaded) {
         return isEnabled();
     });
     Loader::get()->queueInMainThread([]() {
-        auto tab = eclipse::MenuTab::find("Global");
+        auto tab = eclipse::MenuTab::find("Reversed-Inputs");
         tab.addToggle("reversed-inputs-enabled", "Reversed Inputs", [](bool val) {
             Mod::get()->setSettingValue("reversed-inputs-enabled", val);
         }).setDescription("Hold to do nothing, tap to jump.");
