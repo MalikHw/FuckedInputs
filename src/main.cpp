@@ -1,8 +1,8 @@
 #include <Geode/Geode.hpp>
 #include <Geode/loader/GameEvent.hpp>
 #include <Geode/loader/SettingV3.hpp>
-#include <eclipse.eclipse-menu/include/components.hpp>
-#include <eclipse.eclipse-menu/include/config.hpp>
+#include <eclipse.eclipse-menu/components.hpp>
+#include <eclipse.eclipse-menu/config.hpp>
 
 using namespace geode::prelude;
 
