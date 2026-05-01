@@ -40,7 +40,9 @@ class $modify(MyPlayerObject, PlayerObject) {
 // force hold state at level start so the player isn't just hanging(SAYORI REFERENCE!?!?) there
 class $modify(MyPlayLayer, PlayLayer) {
     void autoHold(PlayerObject* p) {
-        auto* mp = static_cast<MyPlayerObject*>(p);
+        if (!p) return;
+        auto* mp = typeinfo_cast<MyPlayerObject*>(p);
+        if (!mp) return;
         mp->m_fields->skip = true;
         mp->PlayerObject::pushButton(PlayerButton::Jump);
         mp->m_fields->skip = false;
@@ -50,8 +52,14 @@ class $modify(MyPlayLayer, PlayLayer) {
             return false;
         if (!isEnabled())
             return true;
-        if (m_player1) autoHold(m_player1);
-        if (m_gameState.m_isDualMode && m_player2) autoHold(m_player2);
+
+        Scheduler::get()->scheduleBlock([this](float) {
+            if (!m_player1) return;
+            autoHold(m_player1);
+            if (m_gameState.m_isDualMode && m_player2)
+                autoHold(m_player2);
+        }, this, 0.f, 0, 0.f, false, "reversed-inputs-autohold");
+
         // warn the player
         Notification::create(
             "Reversed Inputs is ON! just warning tho",
