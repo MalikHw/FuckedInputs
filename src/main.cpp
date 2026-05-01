@@ -41,7 +41,7 @@ class $modify(MyPlayerObject, PlayerObject) {
 class $modify(MyPlayLayer, PlayLayer) {
     void autoHold(PlayerObject* p) {
         if (!p) return;
-        auto* mp = typeinfo_cast<MyPlayerObject*>(p);
+        auto* mp = static_cast<MyPlayerObject*>(typeinfo_cast<PlayerObject*>(p));
         if (!mp) return;
         mp->m_fields->skip = true;
         mp->PlayerObject::pushButton(PlayerButton::Jump);
@@ -53,19 +53,15 @@ class $modify(MyPlayLayer, PlayLayer) {
         if (!isEnabled())
             return true;
 
-        Scheduler::get()->scheduleBlock([this](float) {
+        CCScheduler::get()->scheduleOnce([this](float) {
             if (!m_player1) return;
             autoHold(m_player1);
             if (m_gameState.m_isDualMode && m_player2)
                 autoHold(m_player2);
-        }, this, 0.f, 0, 0.f, false, "reversed-inputs-autohold");
+        }, this, 0.f, "reversed-inputs-autohold");
 
-        // warn the player
-        Notification::create(
-            "Reversed Inputs is ON! just warning tho",
-            NotificationIcon::Warning
-        )->show();
-        return true;
+    // warn the player
+        Notification::create("Reversed Inputs is ON! just warning tho", NotificationIcon::Warning)->show(); return true;
     }
 };
 
