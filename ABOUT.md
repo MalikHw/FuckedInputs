@@ -5,5 +5,6 @@ Reverses user inputs! doing nothing holds, holding = releases
 ### Credits:
 - [MalikHw47](https://youtube.com/@MalikHw47) - Mod Creator
 - [HelloHelloHello](https://www.youtube.com/@hello_hello_hello_gd) - Logo
+- Nightzack18 - Mod Idea
 
 report issues [here](https://github.com/MalikHw/FuckedInputs/issues)
