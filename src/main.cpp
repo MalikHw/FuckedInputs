@@ -72,17 +72,20 @@ $on_game(Loaded) {
 
 // eclipse menu + cheat registration
 $on_game(Loaded) {
-    // register as cheat
-    eclipse::modules::registerCheat("Reversed Inputs", []() {
-        return isEnabled();
-    });
+    if (!Loader::get()->isModLoaded("eclipse.eclipse-menu")) return;
+
     Loader::get()->queueInMainThread([]() {
+        eclipse::modules::registerCheat("Reversed Inputs", []() {
+            return isEnabled();
+        });
+
         auto tab = eclipse::MenuTab::find("Reversed-Inputs");
         tab.addToggle("reversed-inputs-enabled", "Reversed Inputs", [](bool val) {
             Mod::get()->setSettingValue("reversed-inputs-enabled", val);
         }).setDescription("Hold to do nothing, tap to jump.");
+
         eclipse::config::set("reversed-inputs-enabled", Mod::get()->getSettingValue<bool>("reversed-inputs-enabled"));
-        // keep in sync when changed from mod settings
+
         geode::listenForSettingChanges<bool>("reversed-inputs-enabled", [](bool val) {
             eclipse::config::set("reversed-inputs-enabled", val);
         });
