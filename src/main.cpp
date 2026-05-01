@@ -19,7 +19,7 @@ class $modify(MyPlayerObject, PlayerObject) {
         bool skip = false;
     };
     bool pushButton(PlayerButton btn) {
-        if (!isEnabled() || m_fields->skip)
+        if (!isEnabled() || m_fields->skip || (m_isPlatformer && (btn == PlayerButton::Left || btn == PlayerButton::Right)))
             return PlayerObject::pushButton(btn);
         // player press = release
         m_fields->skip = true;
@@ -28,7 +28,7 @@ class $modify(MyPlayerObject, PlayerObject) {
         return r;
     }
     bool releaseButton(PlayerButton btn) {
-        if (!isEnabled() || m_fields->skip)
+        if (!isEnabled() || m_fields->skip || (m_isPlatformer && (btn == PlayerButton::Left || btn == PlayerButton::Right)))
             return PlayerObject::releaseButton(btn);
         // player release = press
         m_fields->skip = true;
