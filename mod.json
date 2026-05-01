@@ -10,7 +10,7 @@
     "id": "malikhw47.reversed-inputs",
     "name": "Reversed Inputs",
     "developer": "MalikHw47",
-    "description": "desc.",
+    "description": "Swaps your inputs, hold to do nothing, tap to jump.",
     "tags": ["gameplay", "joke"],
     "links": {
         "source": "https://github.com/MalikHw/FuckedInputs",
