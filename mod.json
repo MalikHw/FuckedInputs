@@ -16,5 +16,19 @@
         "source": "https://github.com/MalikHw/FuckedInputs",
         "community": "https://discord.gg/G9bZ92eg2n"
     },
-    "settings": {}
+    "settings": {
+        "reversed-inputs-enabled": {
+            "name": "Reversed Inputs",
+            "description": "toggle functionality",
+            "type": "bool",
+            "default": false
+        },
+        "toggle-keybind": {
+            "name": "Toggle Reversed Inputs",
+            "description": "keybind setting",
+            "type": "keybind",
+            "default": "F4",
+            "category": "gameplay"
+        }
+    }
 }
