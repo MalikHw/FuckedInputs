@@ -6,11 +6,11 @@
         "android": "2.2081",
         "ios": "2.2081"
     },
-    "version": "1.0.2",
+    "version": "1.1.0",
     "id": "malikhw47.reversed-inputs",
     "name": "Reversed Inputs",
     "developer": "MalikHw47",
-    "description": "Swaps your inputs, hold to do nothing, tap to jump.",
+    "description": "Swaps your inputs, hold to do nothing, tap to jump",
     "tags": ["gameplay", "joke"],
     "links": {
         "source": "https://github.com/MalikHw/FuckedInputs",
@@ -18,13 +18,31 @@
     },
     "settings": {
         "reversed-inputs-enabled": {
-            "name": "Reversed Inputs",
+            "name": "Toggle",
             "description": "toggle functionality",
             "type": "bool",
             "default": false
         },
+        "allow-in-practice": {
+            "name": "Allow in Practice Mode",
+            "description": "Whether reversed inputs applies in practice mode",
+            "type": "bool",
+            "default": false
+        },
+        "affect-player1": {
+            "name": "Affect Player 1",
+            "description": "Apply reversed inputs to Player 1",
+            "type": "bool",
+            "default": true
+        },
+        "affect-player2": {
+            "name": "Affect Player 2",
+            "description": "Apply reversed inputs to Player 2 in dual mode",
+            "type": "bool",
+            "default": true
+        },
         "toggle-keybind": {
-            "name": "Toggle Reversed Inputs",
+            "name": "Toggle keybind",
             "description": "keybind setting",
             "type": "keybind",
             "default": "F4",
