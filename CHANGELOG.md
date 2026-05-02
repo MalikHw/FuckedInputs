@@ -1,3 +1,6 @@
+### v1.1.1
+- quick bugfix
+
 ### v1.1.0
 - ~~bump geode version~~ nah, some ppl didnt get the update yet LOL
 - fixed getting stuck holding jump when disabling mid-level
