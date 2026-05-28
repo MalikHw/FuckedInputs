@@ -48,9 +48,15 @@ class $modify(MyPlayerObject, PlayerObject) {
         if (m_isPlatformer) {
             if (btn == PlayerButton::Left) btn = PlayerButton::Right;
             else if (btn == PlayerButton::Right) btn = PlayerButton::Left;
+            else {
+                m_fields->skip = true;
+                bool r = PlayerObject::releaseButton(btn);
+                m_fields->skip = false;
+                return r;
+            }
         } else {
             m_fields->skip = true;
-            bool r = PlayerObject::releaseButton(btn);
+            bool r = PlayerObject::releaseButton(btn); // AAAAAAAAAAAAAAAA
             m_fields->skip = false;
             return r;
         }
@@ -62,6 +68,12 @@ class $modify(MyPlayerObject, PlayerObject) {
         if (m_isPlatformer) {
             if (btn == PlayerButton::Left) btn = PlayerButton::Right;
             else if (btn == PlayerButton::Right) btn = PlayerButton::Left;
+            else {
+                m_fields->skip = true;
+                bool r = PlayerObject::pushButton(btn);
+                m_fields->skip = false;
+                return r;
+            }
         } else {
             m_fields->skip = true;
             bool r = PlayerObject::pushButton(btn);
@@ -85,7 +97,6 @@ class $modify(MyPlayerObject, PlayerObject) {
         mp->m_fields->skip = false;
     }
 };
-
 // force hold state at level start so the player isn't just hanging(SAYORI REFERENCE!?!?) there
 class $modify(MyPlayLayer, PlayLayer) {
     void doAutoHold(float) {
