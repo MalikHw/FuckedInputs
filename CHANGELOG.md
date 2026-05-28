@@ -1,3 +1,6 @@
+### v1.2.0
+- Platformer buttons are also swapped lol
+
 ### v1.1.1
 - quick bugfix
 
