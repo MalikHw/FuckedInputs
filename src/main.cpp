@@ -45,8 +45,14 @@ class $modify(MyPlayerObject, PlayerObject) {
     }
 
     bool pushButton(PlayerButton btn) {
-        if (!isEnabled() || m_fields->skip || (m_isPlatformer && (btn == PlayerButton::Left || btn == PlayerButton::Right)))
+        if (!isEnabled() || m_fields->skip)
             return PlayerObject::pushButton(btn);
+        if (m_isPlatformer) {
+            if (btn == PlayerButton::Left)
+                btn = PlayerButton::Right;
+            else if (btn == PlayerButton::Right)
+                btn = PlayerButton::Left;
+        }
         // check for playlayer nullptr presence before running hooks
         if (!isAffectedByMod())
             return PlayerObject::pushButton(btn);
@@ -57,8 +63,14 @@ class $modify(MyPlayerObject, PlayerObject) {
         return r;
     }
     bool releaseButton(PlayerButton btn) {
-        if (!isEnabled() || m_fields->skip || (m_isPlatformer && (btn == PlayerButton::Left || btn == PlayerButton::Right)))
+        if (!isEnabled() || m_fields->skip)
             return PlayerObject::releaseButton(btn);
+        if (m_isPlatformer) {
+            if (btn == PlayerButton::Left)
+                btn = PlayerButton::Right;
+            else if (btn == PlayerButton::Right)
+                btn = PlayerButton::Left;
+        }
         // check for playlayer nullptr presence before running hooks
         if (!isAffectedByMod())
             return PlayerObject::releaseButton(btn);
