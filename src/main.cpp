@@ -33,7 +33,6 @@ class $modify(MyPlayerObject, PlayerObject) {
     struct Fields {
         bool skip = false;
     };
-
     bool isAffectedByMod() const {
         auto* gjbgl = GJBaseGameLayer::get();
         if (!gjbgl || !gjbgl->m_player1) return false;
@@ -43,44 +42,34 @@ class $modify(MyPlayerObject, PlayerObject) {
         if (gjbgl->m_gameState.m_isDualMode && this == gjbgl->m_player2) return affectsPlayer2();
         return false;
     }
-
     bool pushButton(PlayerButton btn) {
-        if (!isEnabled() || m_fields->skip)
+        if (!isEnabled() || m_fields->skip || !isAffectedByMod())
             return PlayerObject::pushButton(btn);
         if (m_isPlatformer) {
-            if (btn == PlayerButton::Left)
-                btn = PlayerButton::Right;
-            else if (btn == PlayerButton::Right)
-                btn = PlayerButton::Left;
+            if (btn == PlayerButton::Left) btn = PlayerButton::Right;
+            else if (btn == PlayerButton::Right) btn = PlayerButton::Left;
+        } else {
+            m_fields->skip = true;
+            bool r = PlayerObject::releaseButton(btn);
+            m_fields->skip = false;
+            return r;
         }
-        // check for playlayer nullptr presence before running hooks
-        if (!isAffectedByMod())
-            return PlayerObject::pushButton(btn);
-        // player press = release
-        m_fields->skip = true;
-        bool r = PlayerObject::releaseButton(btn);
-        m_fields->skip = false;
-        return r;
+        return PlayerObject::pushButton(btn);
     }
     bool releaseButton(PlayerButton btn) {
-        if (!isEnabled() || m_fields->skip)
+        if (!isEnabled() || m_fields->skip || !isAffectedByMod())
             return PlayerObject::releaseButton(btn);
         if (m_isPlatformer) {
-            if (btn == PlayerButton::Left)
-                btn = PlayerButton::Right;
-            else if (btn == PlayerButton::Right)
-                btn = PlayerButton::Left;
+            if (btn == PlayerButton::Left) btn = PlayerButton::Right;
+            else if (btn == PlayerButton::Right) btn = PlayerButton::Left;
+        } else {
+            m_fields->skip = true;
+            bool r = PlayerObject::pushButton(btn);
+            m_fields->skip = false;
+            return r;
         }
-        // check for playlayer nullptr presence before running hooks
-        if (!isAffectedByMod())
-            return PlayerObject::releaseButton(btn);
-        // player release = press
-        m_fields->skip = true;
-        bool r = PlayerObject::pushButton(btn);
-        m_fields->skip = false;
-        return r;
+        return PlayerObject::releaseButton(btn);
     }
-
     static void forceHold(PlayerObject* p) {
         if (!p) return;
         auto* mp = static_cast<MyPlayerObject*>(p);
@@ -88,7 +77,6 @@ class $modify(MyPlayerObject, PlayerObject) {
         mp->PlayerObject::pushButton(PlayerButton::Jump);
         mp->m_fields->skip = false;
     }
-
     static void forceRelease(PlayerObject* p) {
         if (!p) return;
         auto* mp = static_cast<MyPlayerObject*>(p);
