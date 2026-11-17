@@ -4,10 +4,10 @@
 #include <Geode/modify/PlayerObject.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 
-#include <eclipse.eclipse-menu/include/components.hpp>
-#include <eclipse.eclipse-menu/include/config.hpp>
-#include <eclipse.eclipse-menu/include/labels.hpp>
-#include <eclipse.eclipse-menu/include/modules.hpp>
+// #include <eclipse.eclipse-menu/include/components.hpp>
+// #include <eclipse.eclipse-menu/include/config.hpp>
+// #include <eclipse.eclipse-menu/include/labels.hpp>
+// #include <eclipse.eclipse-menu/include/modules.hpp>
 
 using namespace geode::prelude;
 
@@ -25,7 +25,7 @@ static bool allowedInPractice() {
 }
 
 static void updateRiftVariable() {
-    eclipse::label::setVariable<bool>("isReversedInputs", isEnabled());
+    // eclipse::label::setVariable<bool>("isReversedInputs", isEnabled());
 }
 
 // swap push/release
@@ -104,8 +104,8 @@ class $modify(MyPlayLayer, PlayLayer) {
         if (m_gameState.m_isDualMode && m_player2 && affectsPlayer2()) MyPlayerObject::forceHold(m_player2);
         this->unschedule(schedule_selector(MyPlayLayer::doAutoHold));
     }
-    bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects) {
-        if (!PlayLayer::init(level, useReplay, dontCreateObjects))
+    bool init(GJGameLevel* level, bool dontCreateObjects) {
+        if (!PlayLayer::init(level, dontCreateObjects))
             return false;
         if (!isEnabled())
             return true;
@@ -141,62 +141,63 @@ $on_game(Loaded) {
 }
 
 // eclipse menu + cheat registration
-$on_game(Loaded) {
-    if (!Loader::get()->isModLoaded("eclipse.eclipse-menu")) return;
-
-    Loader::get()->queueInMainThread([]() {
-        eclipse::modules::registerCheat("Reversed Inputs", []() {
-            return isEnabled();
-        });
-
-        auto tab = eclipse::MenuTab::find("Reversed-Inputs");
-
-        tab.addToggle("reversed-inputs-enabled", "Reversed Inputs", [](bool val) {
-            Mod::get()->setSettingValue("reversed-inputs-enabled", val);
-            // if toggled off mid-level, release any forced hold so players aren't stuck
-            if (!val) {
-                auto* gjbgl = GJBaseGameLayer::get();
-                if (gjbgl) {
-                    if (gjbgl->m_player1) MyPlayerObject::forceRelease(gjbgl->m_player1);
-                    if (gjbgl->m_gameState.m_isDualMode && gjbgl->m_player2) MyPlayerObject::forceRelease(gjbgl->m_player2);
-                }
-            }
-        }).setDescription("Hold to do nothing, tap to jump.");
-
-        tab.addToggle("allow-in-practice", "Allow in Practice Mode", [](bool val) {
-            Mod::get()->setSettingValue("allow-in-practice", val);
-        }).setDescription("Whether reversed inputs applies in practice mode.");
-
-        tab.addLabel("Affect Players");
-        tab.addToggle("affect-player1", "P1", [](bool val) {
-            Mod::get()->setSettingValue("affect-player1", val);
-        });
-        tab.addToggle("affect-player2", "P2", [](bool val) {
-            Mod::get()->setSettingValue("affect-player2", val);
-        });
-
-        // sync all settings into eclipse config
-        auto mod = Mod::get();
-        eclipse::config::set("reversed-inputs-enabled", mod->getSettingValue<bool>("reversed-inputs-enabled"));
-        eclipse::config::set("allow-in-practice", mod->getSettingValue<bool>("allow-in-practice"));
-        eclipse::config::set("affect-player1", mod->getSettingValue<bool>("affect-player1"));
-        eclipse::config::set("affect-player2", mod->getSettingValue<bool>("affect-player2"));
-
-        geode::listenForSettingChanges<bool>("reversed-inputs-enabled", [](bool val) {
-            eclipse::config::set("reversed-inputs-enabled", val);
-            updateRiftVariable();
-        });
-        geode::listenForSettingChanges<bool>("allow-in-practice", [](bool val) {
-            eclipse::config::set("allow-in-practice", val);
-        });
-        geode::listenForSettingChanges<bool>("affect-player1", [](bool val) {
-            eclipse::config::set("affect-player1", val);
-        });
-        geode::listenForSettingChanges<bool>("affect-player2", [](bool val) {
-            eclipse::config::set("affect-player2", val);
-        });
-
-        // init rift variable
-        updateRiftVariable();
-    });
-}
+// $on_game(Loaded) {
+//     if (!Loader::get()->isModLoaded("eclipse.eclipse-menu")) return;
+// 
+//     Loader::get()->queueInMainThread([]() {
+//         eclipse::modules::registerCheat("Reversed Inputs", []() {
+//             return isEnabled();
+//         });
+// 
+//         auto tab = eclipse::MenuTab::find("Reversed-Inputs");
+// 
+//         tab.addToggle("reversed-inputs-enabled", "Reversed Inputs", [](bool val) {
+//             Mod::get()->setSettingValue("reversed-inputs-enabled", val);
+//             // if toggled off mid-level, release any forced hold so players aren't stuck
+//             if (!val) {
+//                 auto* gjbgl = GJBaseGameLayer::get();
+//                 if (gjbgl) {
+//                     if (gjbgl->m_player1) MyPlayerObject::forceRelease(gjbgl->m_player1);
+//                     if (gjbgl->m_gameState.m_isDualMode && gjbgl->m_player2) MyPlayerObject::forceRelease(gjbgl->m_player2);
+//                 }
+//             }
+//         }).setDescription("Hold to do nothing, tap to jump.");
+// 
+//         tab.addToggle("allow-in-practice", "Allow in Practice Mode", [](bool val) {
+//             Mod::get()->setSettingValue("allow-in-practice", val);
+//         }).setDescription("Whether reversed inputs applies in practice mode.");
+// 
+//         tab.addLabel("Affect Players");
+//         tab.addToggle("affect-player1", "P1", [](bool val) {
+//             Mod::get()->setSettingValue("affect-player1", val);
+//         });
+//         tab.addToggle("affect-player2", "P2", [](bool val) {
+//             Mod::get()->setSettingValue("affect-player2", val);
+//         });
+// 
+//         // sync all settings into eclipse config
+//         auto mod = Mod::get();
+//         eclipse::config::set("reversed-inputs-enabled", mod->getSettingValue<bool>("reversed-inputs-enabled"));
+//         eclipse::config::set("allow-in-practice", mod->getSettingValue<bool>("allow-in-practice"));
+//         eclipse::config::set("affect-player1", mod->getSettingValue<bool>("affect-player1"));
+//         eclipse::config::set("affect-player2", mod->getSettingValue<bool>("affect-player2"));
+// 
+//         geode::listenForSettingChanges<bool>("reversed-inputs-enabled", [](bool val) {
+//             eclipse::config::set("reversed-inputs-enabled", val);
+//             updateRiftVariable();
+//         });
+//         geode::listenForSettingChanges<bool>("allow-in-practice", [](bool val) {
+//             eclipse::config::set("allow-in-practice", val);
+//         });
+//         geode::listenForSettingChanges<bool>("affect-player1", [](bool val) {
+//             eclipse::config::set("affect-player1", val);
+//         });
+//         geode::listenForSettingChanges<bool>("affect-player2", [](bool val) {
+//             eclipse::config::set("affect-player2", val);
+//         });
+// 
+//         // init rift variable
+//         updateRiftVariable();
+//     });
+// }
+// 
