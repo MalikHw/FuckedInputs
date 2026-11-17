@@ -1,3 +1,6 @@
+### v1.2.1
+- 2.2091 port
+
 ### v1.2.0
 - Platformer buttons are also swapped lol
 
